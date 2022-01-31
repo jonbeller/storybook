@@ -41,7 +41,7 @@ const cleanDirectory = async ({ cwd }: Options): Promise<void> => {
 const buildStorybook = async ({ cwd }: Options) => {
   await exec(
     `yarn build-storybook --quiet`,
-    { cwd, silent: false },
+    { cwd },
     { startMessage: `👷 Building Storybook`, errorMessage: `🚨 Storybook build failed` }
   );
 };
@@ -98,9 +98,12 @@ const runTests = async ({ name, ...rest }: Parameters) => {
     }
 
     const command = `${sbCLICommand} ${commandArgs.join(' ')}`;
+
+    console.log(1, { command });
+
     await exec(
       command,
-      { cwd: siblingDir, silent: false },
+      { cwd: siblingDir },
       {
         startMessage: `👷 Bootstrapping ${options.framework} project`,
         errorMessage: `🚨 Unable to bootstrap project`,

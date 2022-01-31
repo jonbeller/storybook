@@ -70,9 +70,11 @@ export const exec = async (
     timedOut,
     killed,
   });
-  console.log(all);
+
+  console.log({ all });
 
   if (failed) {
+    console.log(errorMessage);
     throw new Error(errorMessage);
   }
 };
@@ -115,7 +117,7 @@ const configureYarn2ForE2E = async ({ cwd }: Options) => {
 const generate = async ({ cwd, name, appName, version, generator }: Options) => {
   const command = generator.replace(/{{appName}}/g, appName).replace(/{{version}}/g, version);
 
-  console.log({ command });
+  console.log('generate', { command, generator });
 
   await exec(
     command,
@@ -217,15 +219,19 @@ export const createAndInit = async (
   logger.log();
   logger.info(`🏃 Starting for ${name} ${version}`);
   logger.log();
-  logger.debug(options);
+  logger.log(options);
   logger.log();
 
+  console.log('step 1');
   await doTask(generate, { ...options, cwd: options.creationPath });
 
+  console.log('step 2');
   await doTask(installYarn2, options);
 
+  console.log('step 3');
   await doTask(configureYarn2ForE2E, options, e2e);
 
+  console.log('step 4');
   await doTask(addTypescript, options, !!options.typescript);
   await doTask(addRequiredDeps, options);
   await doTask(initStorybook, options);
