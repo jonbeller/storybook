@@ -72,7 +72,8 @@ export const exec = async (
     killed,
   });
 
-  console.log({ all });
+  process.stdout.write(all);
+  console.log('--done--');
 
   if (failed) {
     console.log(errorMessage);
