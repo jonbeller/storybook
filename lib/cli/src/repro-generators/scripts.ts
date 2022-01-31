@@ -1,7 +1,8 @@
 import path from 'path';
 import { writeJSON } from 'fs-extra';
-import shell, { ExecOptions } from 'shelljs';
-import chalk from 'chalk';
+import shell from 'shelljs';
+// import chalk from 'chalk';
+import { command as execaCommand, Options as ExecaOptions } from 'execa';
 
 const logger = console;
 
@@ -40,31 +41,40 @@ export interface Options extends Parameters {
 }
 
 export const exec = async (
-  command: string,
-  options: ExecOptions = {},
+  commandString: string,
+  options: ExecaOptions = {},
   { startMessage, errorMessage }: { startMessage?: string; errorMessage?: string } = {}
 ) => {
   if (startMessage) {
     logger.info(startMessage);
   }
-  logger.debug(command);
-  return new Promise((resolve, reject) => {
-    const defaultOptions: ExecOptions = {
-      silent: true,
-    };
-    shell.exec(command, { ...defaultOptions, ...options }, (code, stdout, stderr) => {
-      if (code === 0) {
-        resolve(undefined);
-      } else {
-        logger.error(chalk.red(`An error occurred while executing: \`${command}\``));
-        logger.error(`Command output was:${chalk.yellow(`\n${stdout}\n${stderr}`)}`);
-        if (errorMessage) {
-          logger.error(errorMessage);
-        }
-        reject(new Error(`command exited with code: ${code}: `));
-      }
-    });
+  logger.debug(commandString);
+  const {
+    failed,
+    exitCode,
+    escapedCommand,
+    timedOut,
+    killed,
+    all,
+    signalDescription,
+    signal,
+    isCanceled,
+  } = await execaCommand(commandString, options);
+
+  console.log({
+    exitCode,
+    escapedCommand,
+    signalDescription,
+    signal,
+    isCanceled,
+    timedOut,
+    killed,
   });
+  console.log(all);
+
+  if (failed) {
+    throw new Error(errorMessage);
+  }
 };
 
 const installYarn2 = async ({ cwd, pnp }: Options) => {
