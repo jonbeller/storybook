@@ -36,7 +36,7 @@ export const cra: Parameters = {
   version: 'latest',
   generator: [
     // Force npm otherwise we have a mess between Yarn 1 and Yarn 2
-    'npx --p create-react-app@{{version}} create-react-app {{appName}} --use-npm',
+    'npx -p create-react-app@{{version}} create-react-app {{appName}} --use-npm',
     'cd {{appName}}',
     'echo "FAST_REFRESH=true" > .env',
     'echo "SKIP_PREFLIGHT_CHECK=true" > .env',
@@ -49,7 +49,7 @@ export const cra_typescript: Parameters = {
   version: 'latest',
   generator: [
     // Force npm otherwise we have a mess between Yarn 1 and Yarn 2
-    'npx --p create-react-app@{{version}} create-react-app {{appName}} --template typescript --use-npm',
+    'npx -p create-react-app@{{version}} create-react-app {{appName}} --template typescript --use-npm',
   ].join(' && '),
 };
 
@@ -96,7 +96,7 @@ const baseAngular: Parameters = {
   framework: 'angular',
   name: 'angular',
   version: 'latest',
-  generator: `npx --p @angular/cli@{{version}} ng new {{appName}} --routing=true --minimal=true --style=scss --skipInstall=true --strict`,
+  generator: `npx -p @angular/cli@{{version}} ng new {{appName}} --routing=true --minimal=true --style=scss --skipInstall=true --strict`,
 };
 
 export const angular10: Parameters = {
