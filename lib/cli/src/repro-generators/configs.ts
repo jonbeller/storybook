@@ -36,7 +36,7 @@ export const cra: Parameters = {
   version: 'latest',
   generator: [
     // Force npm otherwise we have a mess between Yarn 1 and Yarn 2
-    'npx create-react-app@{{version}} {{appName}} --use-npm',
+    'npx --yes create-react-app@{{version}} {{appName}} --use-npm',
     'cd {{appName}}',
     'echo "FAST_REFRESH=true" > .env',
     'echo "SKIP_PREFLIGHT_CHECK=true" > .env',
@@ -49,7 +49,7 @@ export const cra_typescript: Parameters = {
   version: 'latest',
   generator: [
     // Force npm otherwise we have a mess between Yarn 1 and Yarn 2
-    'npx create-react-app@{{version}} {{appName}} --template typescript --use-npm',
+    'npx --yes create-react-app@{{version}} {{appName}} --template typescript --use-npm',
   ].join(' && '),
 };
 
