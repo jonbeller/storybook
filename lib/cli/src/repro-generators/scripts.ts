@@ -48,7 +48,8 @@ export const exec = async (
   if (startMessage) {
     logger.info(startMessage);
   }
-  logger.debug(commandString);
+  logger.log({ commandString, shell: true });
+  const child = await execaCommand(commandString, { ...options, shell: true, all: true });
   const {
     failed,
     exitCode,
@@ -59,7 +60,7 @@ export const exec = async (
     signalDescription,
     signal,
     isCanceled,
-  } = await execaCommand(commandString, options);
+  } = child;
 
   console.log({
     exitCode,
